@@ -9,4 +9,17 @@ router.get("/", (req, res) =>
     .catch(err => console.log(err))
 );
 
+router.post("/createPlayer", (req, res) => {
+  let user = new User({
+    username: req.body.username,
+    email: req.body.email,
+    password: req.body.password,
+    
+  });
+
+  user.save();
+
+  res.send("User Added");
+});
+
 module.exports = router;
