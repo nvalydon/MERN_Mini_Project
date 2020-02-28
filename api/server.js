@@ -15,7 +15,10 @@ app.use(cors());
 // app.use(passport.session());
 // app.use(passport.authenticate('local'));
 app.use(express.json());
+// app.get('*', (req, res) => res.status(200).send({
+//     message: 'Welcome to the beginning of nothingness.',
+//   }));
 
-// app.use('/users', users);
+app.use('/users', users);
 
 app.listen(9000);
