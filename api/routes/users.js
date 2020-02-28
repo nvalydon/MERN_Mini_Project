@@ -4,7 +4,7 @@ const db = require("../config/database");
 const User = require("../models/users");
 
 router.get("/get", (req, res) => {
-  User.findAll((err, result) => res.send(result))}
+  User.find((err, result) => res.json(result))}
     // .then(users => console.log(users))
     // .catch(err => console.log(err))
 );
