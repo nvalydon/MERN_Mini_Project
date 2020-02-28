@@ -4,7 +4,7 @@ const cors = require('cors');
 const passport = require('./auth');
 const books = require('./routes/books');
 const users = require('./routes/users');
-const { session } = require('./config.json');
+const { session } = require('./config/config.json');
 const users = require('./routes/users')
 
 app.use(require('cookie-parser')());
