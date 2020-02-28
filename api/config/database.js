@@ -4,6 +4,9 @@ module.exports = new Sequelize("userdb", 'root', 'password',{
    port: '3306',
    dialect: 'mysql',
    operatorsAliases: false,
+   define: {
+       timestamps: false
+   },
    
    pool:{
        max: 5,
