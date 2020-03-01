@@ -1,9 +1,8 @@
 const Sequelize = require('sequelize');
-module.exports = new Sequelize("userdb", 'root', 'password',{
-   host: '192.168.1.123',
+module.exports = new Sequelize("usedb", 'root', 'password',{
+   host: 'localhost',
    port: '3306',
    dialect: 'mysql',
-   operatorsAliases: false,
    define: {
        timestamps: false
    },

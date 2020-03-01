@@ -1,5 +1,8 @@
 {
     "session": {
         "secret": "DEFAULT KEY NOT FOR LIVE"
+    },
+    "jwt": {
+        "secret" : "DEFAULT KEY NOT FOR LIVE"
     }
 }

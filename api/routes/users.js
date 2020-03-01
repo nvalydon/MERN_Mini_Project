@@ -1,28 +1,58 @@
 const express = require("express");
 const router = express.Router();
-const db = require("../config/database");
 const User = require("../models/users");
+const { jwt: { secret } } = require('../config/config.json');
+const jwt = require('jsonwebtoken');
+const passport = require('../auth');
 
 router.get("/get", (req, res) => {
-  User.find((err, result) => res.json(result))}
-    // .then(users => console.log(users))
-    // .catch(err => console.log(err))
-);
+  User.findAll({
+    attributes: ['username', 'email']
+  })
+    .then(result => {
+      res.status(200).json({ users: result })
+    })
+    .catch(err => console.log(err));
+});
+
 router.get('/test', (req, res) => {
-  res.sendStatus(200).send({message: "hello"});
+  res.send({ message: "hello" });
 });
 
-router.post("/createPlayer", (req, res) => {
-  let user = new User({
-    username: req.body.username,
-    email: req.body.email,
-    password: req.body.password,
-    
+router.post("/register", ({ body: { username, password, email } }, res) => {
+  debugger;
+  User.register(new User({
+    username: username,
+    email: email
+  }, password, (err, user) => {
+    console.log("enters response");
+    if (err) {
+      console.log(err);
+      return res.status(500).send(`Error: ${err}`);
+    }
+    const token = jwt.sign({ id: user.id }, secret, {
+      expiresIn: 60 * 60
+    });
+    res.status(201).send({
+      message: `User: ${user.username} added and signed in`,
+      token,
+      auth: true,
+      name: user.username
+    });
+  }));
+});
+
+router.post("/login", passport.authenticate('local', { failureRedirect: 'login' }),
+  ({ user: { id, username } }, res) => {
+    const token = jwt.sign({ id: id }, secret, {
+      expiresIn: 60 * 60
+    });
+    res.status(200).json({
+      message: `User ${username} found and signed in`,
+      token,
+      auth: true,
+      name: username
+    });
   });
-
-  user.save();
-
-  res.send("User Added");
-});
 
 module.exports = router;
