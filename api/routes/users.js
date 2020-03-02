@@ -20,7 +20,6 @@ router.get('/test', (req, res) => {
 });
 
 router.post("/register", ({ body: { username, password, email } }, res) => {
-  debugger;
   User.register(new User({
     username: username,
     email: email
