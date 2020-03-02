@@ -1,6 +1,6 @@
 const User = require('./models/users');
 const passport = require('passport');
-const LocalStrategy = require('passport-local').Strategy;
+const LocalStrategy = require('passport-local-sequelize').Strategy;
 const JWTStrategy = require('passport-jwt').Strategy;
 const ExtractJWT = require('passport-jwt').ExtractJwt;
 const { jwt: { secret } } = require('./config/config.json')
@@ -29,19 +29,19 @@ passport.use(new JWTStrategy(opts, (jwtPayload, done) => {
         })
 }))
 
-passport.use(new LocalStrategy(
-    (username, password, done) => {
-        User.findOne({ username: username }, (err, user) => {
-            if (err) { return done(err); }
-            if (!user) {
-                return done(null, false, { message: "incorrect username" });
-            }
-            if (!user.validPassword(password)) {
-                return done(null, false, { message: "incorrect password" });
-            }
-            return done(null, user);
-        });
-    }
-));
+// passport.use(new LocalStrategy(
+//     (username, password, done) => {
+//         User.findOne({ username: username }, (err, user) => {
+//             if (err) { return done(err); }
+//             if (!user) {
+//                 return done(null, false, { message: "incorrect username" });
+//             }
+//             if (!user.validPassword(password)) {
+//                 return done(null, false, { message: "incorrect password" });
+//             }
+//             return done(null, user);
+//         });
+//     }
+// ));
 
 module.exports = passport;

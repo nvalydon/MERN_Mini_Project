@@ -24,7 +24,7 @@ router.post("/register", ({ body: { username, password, email } }, res) => {
   User.register(new User({
     username: username,
     email: email
-  }, password, (err, user) => {
+  }), password, (err, user) => {
     console.log("enters response");
     if (err) {
       console.log(err);
@@ -39,20 +39,25 @@ router.post("/register", ({ body: { username, password, email } }, res) => {
       auth: true,
       name: user.username
     });
-  }));
+  });
 });
 
-router.post("/login", passport.authenticate('local', { failureRedirect: 'login' }),
+router.post("/login", passport.authenticate('local', { failureRedirect: '/login' }),
   ({ user: { id, username } }, res) => {
     const token = jwt.sign({ id: id }, secret, {
       expiresIn: 60 * 60
     });
-    res.status(200).json({
+    res.status(200).send({
       message: `User ${username} found and signed in`,
       token,
       auth: true,
       name: username
     });
   });
+
+router.get("/getUser", passport.authenticate('jwt', { failureRedirect: '/login'}),
+  (req, res) => {
+    res.send("hello");
+  })
 
 module.exports = router;
